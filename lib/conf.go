@@ -187,7 +187,7 @@ func GetStringConf(key string) string {
 	if !ok {
 		return ""
 	}
-	confString := v.GetString(strings.Join(keys[1:len(keys)], "."))
+	confString := v.GetString(strings.Join(keys[1:], "."))
 	return confString
 }
 
@@ -198,7 +198,7 @@ func GetStringMapConf(key string) map[string]interface{} {
 		return nil
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetStringMap(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetStringMap(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -209,7 +209,7 @@ func GetConf(key string) interface{} {
 		return nil
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.Get(strings.Join(keys[1:len(keys)], "."))
+	conf := v.Get(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -220,7 +220,7 @@ func GetBoolConf(key string) bool {
 		return false
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetBool(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetBool(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -231,7 +231,7 @@ func GetFloat64Conf(key string) float64 {
 		return 0
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetFloat64(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetFloat64(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -242,7 +242,7 @@ func GetIntConf(key string) int {
 		return 0
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetInt(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetInt(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -253,7 +253,7 @@ func GetStringMapStringConf(key string) map[string]string {
 		return nil
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetStringMapString(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetStringMapString(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -264,7 +264,7 @@ func GetStringSliceConf(key string) []string {
 		return nil
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetStringSlice(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetStringSlice(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -275,7 +275,7 @@ func GetTimeConf(key string) time.Time {
 		return time.Now()
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetTime(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetTime(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -286,7 +286,7 @@ func GetDurationConf(key string) time.Duration {
 		return 0
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.GetDuration(strings.Join(keys[1:len(keys)], "."))
+	conf := v.GetDuration(strings.Join(keys[1:], "."))
 	return conf
 }
 
@@ -297,6 +297,6 @@ func IsSetConf(key string) bool {
 		return false
 	}
 	v := ViperConfMap[keys[0]]
-	conf := v.IsSet(strings.Join(keys[1:len(keys)], "."))
+	conf := v.IsSet(strings.Join(keys[1:], "."))
 	return conf
 }
