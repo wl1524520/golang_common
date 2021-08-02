@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	dlog "github.com/e421083458/golang_common/log"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -17,6 +16,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	dlog "github.com/wl1524520/golang_common/log"
 )
 
 var TimeLocation *time.Location

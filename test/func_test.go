@@ -3,7 +3,6 @@ package test
 import (
 	"bytes"
 	"fmt"
-	"github.com/e421083458/golang_common/lib"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/wl1524520/golang_common/lib"
 )
 
 var (
@@ -90,7 +91,7 @@ func TestPost(t *testing.T) {
 //初始化测试用例
 func SetUp() {
 	initOnce.Do(func() {
-		if err := lib.InitModule("../conf/dev/", []string{"base", "mysql", "redis",}); err != nil {
+		if err := lib.InitModule("../conf/dev/", []string{"base", "mysql", "redis"}); err != nil {
 			log.Fatal(err)
 		}
 	})
@@ -134,7 +135,7 @@ func InitTestServer() {
 func TestGetStringConf(t *testing.T) {
 	SetUp()
 	got := lib.GetStringConf("base.log.log_level")
-	if got!="trace"{
+	if got != "trace" {
 		t.Fatal("got result error")
 	}
 }

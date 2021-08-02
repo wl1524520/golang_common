@@ -2,8 +2,9 @@ package lib
 
 import (
 	"fmt"
-	dlog "github.com/e421083458/golang_common/log"
 	"strings"
+
+	dlog "github.com/wl1524520/golang_common/log"
 )
 
 // 通用DLTag常量定义

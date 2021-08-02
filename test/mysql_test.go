@@ -2,10 +2,11 @@ package test
 
 import (
 	"fmt"
-	"github.com/e421083458/golang_common/lib"
-	"github.com/e421083458/gorm"
 	"testing"
 	"time"
+
+	"github.com/e421083458/gorm"
+	"github.com/wl1524520/golang_common/lib"
 )
 
 type Test1 struct {

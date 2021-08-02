@@ -1,4 +1,4 @@
-package: github.com/e421083458/golang_common
+package: github.com/wl1524520/golang_common
 import:
 - package: github.com/go-sql-driver/mysql
   version: v1.3.0

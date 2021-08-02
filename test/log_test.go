@@ -1,10 +1,11 @@
 package test
 
 import (
-	"github.com/e421083458/golang_common/lib"
-	"github.com/e421083458/golang_common/log"
 	"testing"
 	"time"
+
+	"github.com/wl1524520/golang_common/lib"
+	"github.com/wl1524520/golang_common/log"
 )
 
 //测试日志打点
@@ -19,22 +20,22 @@ func TestDefaultLog(t *testing.T) {
 
 //测试日志实例打点
 func TestLogInstance(t *testing.T) {
-	nlog:= log.NewLogger()
-	logConf:= log.LogConfig{
-		Level:"trace",
+	nlog := log.NewLogger()
+	logConf := log.LogConfig{
+		Level: "trace",
 		FW: log.ConfFileWriter{
-			On:true,
-			LogPath:"./log_test.log",
-			RotateLogPath:"./log_test.log",
-			WfLogPath:"./log_test.wf.log",
-			RotateWfLogPath:"./log_test.wf.log",
+			On:              true,
+			LogPath:         "./log_test.log",
+			RotateLogPath:   "./log_test.log",
+			WfLogPath:       "./log_test.wf.log",
+			RotateWfLogPath: "./log_test.wf.log",
 		},
 		CW: log.ConfConsoleWriter{
-			On:true,
-			Color:true,
+			On:    true,
+			Color: true,
 		},
 	}
-	log.SetupLogInstanceWithConf(logConf,nlog)
+	log.SetupLogInstanceWithConf(logConf, nlog)
 	nlog.Info("test message")
 	nlog.Close()
 	time.Sleep(time.Second)

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/e421083458/golang_common/lib"
 	"log"
 	"time"
+
+	"github.com/wl1524520/golang_common/lib"
 )
 
 func main() {
-	if err := lib.InitModule("./conf/dev/",[]string{"base","mysql","redis",}); err != nil {
+	if err := lib.InitModule("./conf/dev/", []string{"base", "mysql", "redis"}); err != nil {
 		log.Fatal(err)
 	}
 	defer lib.Destroy()
