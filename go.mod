@@ -8,5 +8,6 @@ require (
 	golang.org/x/sys v0.0.0-20211030160813-b3129d9d1021 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gorm.io/driver/mysql v1.1.3
+	gorm.io/driver/sqlite v1.2.3
 	gorm.io/gorm v1.22.2
 )

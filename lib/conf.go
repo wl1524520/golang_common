@@ -54,6 +54,18 @@ type MySQLConf struct {
 	MaxConnLifeTime int    `mapstructure:"max_conn_life_time"`
 }
 
+type SqliteMapConf struct {
+	List map[string]*SqliteConf `mapstructure:"list"`
+}
+
+type SqliteConf struct {
+	DriverName      string `mapstructure:"driver_name"`
+	DataSourceName  string `mapstructure:"data_source_name"`
+	MaxOpenConn     int    `mapstructure:"max_open_conn"`
+	MaxIdleConn     int    `mapstructure:"max_idle_conn"`
+	MaxConnLifeTime int    `mapstructure:"max_conn_life_time"`
+}
+
 type RedisMapConf struct {
 	List map[string]*RedisConf `mapstructure:"list"`
 }
@@ -68,14 +80,18 @@ type RedisConf struct {
 }
 
 //全局变量
-var ConfBase *BaseConf
-var DBMapPool map[string]*sql.DB
-var GORMMapPool map[string]*gorm.DB
-var DBDefaultPool *sql.DB
-var GORMDefaultPool *gorm.DB
-var ConfRedis *RedisConf
-var ConfRedisMap *RedisMapConf
-var ViperConfMap map[string]*viper.Viper
+var (
+	ConfBase              *BaseConf
+	DBMapPool             map[string]*sql.DB
+	GORMMapPool           map[string]*gorm.DB
+	GORMSqliteMapPool     map[string]*gorm.DB
+	DBDefaultPool         *sql.DB
+	GORMDefaultPool       *gorm.DB
+	GORMSqliteDefaultPool *gorm.DB
+	ConfRedis             *RedisConf
+	ConfRedisMap          *RedisMapConf
+	ViperConfMap          map[string]*viper.Viper
+)
 
 //获取基本配置信息
 func GetBaseConf() *BaseConf {

@@ -1,3 +1,5 @@
 .idea
 golang_common.*.log
 test/*.log
+test/*.toml
+test/*.db

@@ -83,6 +83,13 @@ func InitModule(configPath string, modules []string) error {
 		}
 	}
 
+	// 加载sqlite配置并初始化实例
+	if InArrayString("sqlite", modules) {
+		if err := InitSqliteDBPool(GetConfPath("sqlite_map")); err != nil {
+			fmt.Printf("[ERROR] %s%s\n", time.Now().Format(TimeFormat), " InitSqliteDBPool:"+err.Error())
+		}
+	}
+
 	// 设置时区
 	if location, err := time.LoadLocation(ConfBase.TimeLocation); err != nil {
 		return err
