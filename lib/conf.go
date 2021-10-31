@@ -2,7 +2,6 @@ package lib
 
 import (
 	"bytes"
-	"database/sql"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -42,23 +41,11 @@ type LogConfig struct {
 	CW    LogConfConsoleWriter `mapstructure:"console_writer"`
 }
 
-type MysqlMapConf struct {
-	List map[string]*MySQLConf `mapstructure:"list"`
+type DBMapConf struct {
+	List map[string]*DBConf `mapstructure:"list"`
 }
 
-type MySQLConf struct {
-	DriverName      string `mapstructure:"driver_name"`
-	DataSourceName  string `mapstructure:"data_source_name"`
-	MaxOpenConn     int    `mapstructure:"max_open_conn"`
-	MaxIdleConn     int    `mapstructure:"max_idle_conn"`
-	MaxConnLifeTime int    `mapstructure:"max_conn_life_time"`
-}
-
-type SqliteMapConf struct {
-	List map[string]*SqliteConf `mapstructure:"list"`
-}
-
-type SqliteConf struct {
+type DBConf struct {
 	DriverName      string `mapstructure:"driver_name"`
 	DataSourceName  string `mapstructure:"data_source_name"`
 	MaxOpenConn     int    `mapstructure:"max_open_conn"`
@@ -81,16 +68,12 @@ type RedisConf struct {
 
 //全局变量
 var (
-	ConfBase              *BaseConf
-	DBMapPool             map[string]*sql.DB
-	GORMMapPool           map[string]*gorm.DB
-	GORMSqliteMapPool     map[string]*gorm.DB
-	DBDefaultPool         *sql.DB
-	GORMDefaultPool       *gorm.DB
-	GORMSqliteDefaultPool *gorm.DB
-	ConfRedis             *RedisConf
-	ConfRedisMap          *RedisMapConf
-	ViperConfMap          map[string]*viper.Viper
+	ConfBase        *BaseConf
+	GORMMapPool     map[string]*gorm.DB
+	GORMDefaultPool *gorm.DB
+	ConfRedis       *RedisConf
+	ConfRedisMap    *RedisMapConf
+	ViperConfMap    map[string]*viper.Viper
 )
 
 //获取基本配置信息

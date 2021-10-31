@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/wl1524520/golang_common/lib"
-	"gorm.io/gorm"
 )
 
 type Test2 struct {
@@ -17,10 +16,6 @@ type Test2 struct {
 
 func (f *Test2) Table() string {
 	return "test2"
-}
-
-func (f *Test2) DB() *gorm.DB {
-	return lib.GORMSqliteDefaultPool
 }
 
 var (
@@ -39,7 +34,7 @@ func Test_Sqlite_GORM(t *testing.T) {
 	SetUp()
 
 	//获取链接池
-	dbpool, err := lib.GetSqliteGormPool("default")
+	dbpool, err := lib.GetGormPool("sqlite")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,10 +64,10 @@ func Test_Sqlite_GORM(t *testing.T) {
 	fmt.Println(list)
 
 	// 删除表数据
-	if err := db.Exec(dropTableSQL2).Error; err != nil {
-		db.Rollback()
-		t.Fatal(err)
-	}
+	// if err := db.Exec(dropTableSQL2).Error; err != nil {
+	// 	db.Rollback()
+	// 	t.Fatal(err)
+	// }
 	db.Commit()
 	TearDown()
 }

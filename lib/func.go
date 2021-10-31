@@ -30,7 +30,7 @@ var LocalIP = net.ParseIP("127.0.0.1")
 //函数传入配置文件 Init("./conf/dev/")
 //如果配置文件为空，会从命令行中读取 	  -config conf/dev/
 func Init(configPath string) error {
-	return InitModule(configPath, []string{"base", "mysql", "redis"})
+	return InitModule(configPath, []string{"base", "database", "redis"})
 }
 
 //模块初始化
@@ -77,16 +77,9 @@ func InitModule(configPath string, modules []string) error {
 	}
 
 	// 加载mysql配置并初始化实例
-	if InArrayString("mysql", modules) {
-		if err := InitDBPool(GetConfPath("mysql_map")); err != nil {
+	if InArrayString("database", modules) {
+		if err := InitDBPool(GetConfPath("database_map")); err != nil {
 			fmt.Printf("[ERROR] %s%s\n", time.Now().Format(TimeFormat), " InitDBPool:"+err.Error())
-		}
-	}
-
-	// 加载sqlite配置并初始化实例
-	if InArrayString("sqlite", modules) {
-		if err := InitSqliteDBPool(GetConfPath("sqlite_map")); err != nil {
-			fmt.Printf("[ERROR] %s%s\n", time.Now().Format(TimeFormat), " InitSqliteDBPool:"+err.Error())
 		}
 	}
 

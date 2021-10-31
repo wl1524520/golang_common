@@ -5,25 +5,36 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func InitSqliteDBPool(path string) error {
+func InitDBPool(path string) error {
 	//普通的db方式
-	DbConfMap := &SqliteMapConf{}
+	DbConfMap := &DBMapConf{}
 	err := ParseConfig(path, DbConfMap)
 	if err != nil {
 		return err
 	}
 	if len(DbConfMap.List) == 0 {
-		fmt.Printf("[INFO] %s%s\n", time.Now().Format(TimeFormat), " empty sqlite config.")
+		fmt.Printf("[INFO] %s%s\n", time.Now().Format(TimeFormat), " empty mysql config.")
 	}
 
-	GORMSqliteMapPool = map[string]*gorm.DB{}
+	GORMMapPool = map[string]*gorm.DB{}
 	for confName, DbConf := range DbConfMap.List {
+		var dbgorm *gorm.DB
+		var err error
+		var dial gorm.Dialector
 		//gorm连接方式
-		dbgorm, err := gorm.Open(sqlite.Open(DbConf.DataSourceName), &gorm.Config{})
+		if DbConf.DriverName == "mysql" {
+			// mysql
+			dial = mysql.Open(DbConf.DataSourceName)
+		} else {
+			// sqlite
+			dial = sqlite.Open(DbConf.DataSourceName)
+		}
+		dbgorm, err = gorm.Open(dial, &gorm.Config{})
 		if err != nil {
 			return err
 		}
@@ -39,24 +50,25 @@ func InitSqliteDBPool(path string) error {
 		sqlDB.SetMaxIdleConns(DbConf.MaxIdleConn)
 		sqlDB.SetMaxOpenConns(DbConf.MaxOpenConn)
 		sqlDB.SetConnMaxLifetime(time.Duration(DbConf.MaxConnLifeTime) * time.Second)
-		GORMSqliteMapPool[confName] = dbgorm
+		GORMMapPool[confName] = dbgorm
 	}
 
-	if dbpool, err := GetSqliteGormPool("default"); err == nil {
-		GORMSqliteDefaultPool = dbpool
+	// 手动配置连接
+	if dbpool, err := GetGormPool("default"); err == nil {
+		GORMDefaultPool = dbpool
 	}
 	return nil
 }
 
-func GetSqliteGormPool(name string) (*gorm.DB, error) {
-	if dbpool, ok := GORMSqliteMapPool[name]; ok {
+func GetGormPool(name string) (*gorm.DB, error) {
+	if dbpool, ok := GORMMapPool[name]; ok {
 		return dbpool, nil
 	}
 	return nil, errors.New("get pool error")
 }
 
-func CloseSqliteDB() error {
-	for _, dbpool := range GORMSqliteMapPool {
+func CloseDB() error {
+	for _, dbpool := range GORMMapPool {
 		sqlDB, _ := dbpool.DB()
 		sqlDB.Close()
 	}

@@ -91,7 +91,7 @@ func TestPost(t *testing.T) {
 //初始化测试用例
 func SetUp() {
 	initOnce.Do(func() {
-		if err := lib.InitModule("../conf/dev/", []string{"base", "mysql", "sqlite", "redis"}); err != nil {
+		if err := lib.InitModule("../conf/dev/", []string{"base", "database", "redis"}); err != nil {
 			log.Fatal(err)
 		}
 	})

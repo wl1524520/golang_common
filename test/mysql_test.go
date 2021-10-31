@@ -35,74 +35,7 @@ var (
 	rollbackSQL  = "rollback;"
 )
 
-func Test_DBPool(t *testing.T) {
-	SetUp()
-
-	//获取链接池
-	dbpool, err := lib.GetDBPool("default")
-	if err != nil {
-		t.Fatal(err)
-	}
-	//开始事务
-	trace := lib.NewTrace()
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, beginSQL); err != nil {
-		t.Fatal(err)
-	}
-
-	//创建表
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, createTableSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//插入数据
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, insertSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//循环查询数据
-	current_id := 0
-	table_name := "test1"
-	fmt.Println("begin read table ", table_name, "")
-	fmt.Println("------------------------------------------------------------------------")
-	fmt.Printf("%6s | %6s\n", "id", "created_at")
-	for {
-		rows, err := lib.DBPoolLogQuery(trace, dbpool, "SELECT id,created_at FROM test1 WHERE id>? order by id asc", current_id)
-		defer rows.Close()
-		row_len := 0
-		if err != nil {
-			lib.DBPoolLogQuery(trace, dbpool, "rollback;")
-			t.Fatal(err)
-		}
-		for rows.Next() {
-			var create_time string
-			if err := rows.Scan(&current_id, &create_time); err != nil {
-				lib.DBPoolLogQuery(trace, dbpool, "rollback;")
-				t.Fatal(err)
-			}
-			fmt.Printf("%6d | %6s\n", current_id, create_time)
-			row_len++
-		}
-		if row_len == 0 {
-			break
-		}
-	}
-	fmt.Println("------------------------------------------------------------------------")
-	fmt.Println("finish read table ", table_name, "")
-
-	//删除表
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, dropTableSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//提交事务
-	lib.DBPoolLogQuery(trace, dbpool, commitSQL)
-	TearDown()
-}
-
-func Test_GORM(t *testing.T) {
+func Test_MySQL_GORM(t *testing.T) {
 	SetUp()
 
 	//获取链接池
