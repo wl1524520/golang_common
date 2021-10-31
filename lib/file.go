@@ -3,10 +3,11 @@ package lib
 import (
 	"bytes"
 	"fmt"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 var ConfEnvPath string //配置文件夹
@@ -26,7 +27,7 @@ func ParseConfPath(config string) error {
 }
 
 //获取配置环境名
-func GetConfEnv() string{
+func GetConfEnv() string {
 	return ConfEnv
 }
 
@@ -58,10 +59,10 @@ func ParseConfig(path string, conf interface{}) error {
 		return fmt.Errorf("Read config fail, %v", err)
 	}
 
-	v:=viper.New()
+	v := viper.New()
 	v.SetConfigType("toml")
 	v.ReadConfig(bytes.NewBuffer(data))
-	if err:=v.Unmarshal(conf);err!=nil{
+	if err := v.Unmarshal(conf); err != nil {
 		return fmt.Errorf("Parse config fail, config:%v, err:%v", string(data), err)
 	}
 	return nil

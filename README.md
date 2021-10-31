@@ -15,7 +15,6 @@
   - [测试Post请求](#%E6%B5%8B%E8%AF%95post%E8%AF%B7%E6%B1%82)
   - [测试默认日志打点](#%E6%B5%8B%E8%AF%95%E9%BB%98%E8%AE%A4%E6%97%A5%E5%BF%97%E6%89%93%E7%82%B9)
   - [测试自定义日志实例打点](#%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E5%AE%9E%E4%BE%8B%E6%89%93%E7%82%B9)
-  - [测试mysql普通sql](#%E6%B5%8B%E8%AF%95mysql%E6%99%AE%E9%80%9Asql)
   - [测试Gorm](#%E6%B5%8B%E8%AF%95gorm)
   - [测试redis查询](#%E6%B5%8B%E8%AF%95redis%E6%9F%A5%E8%AF%A2)
   - [销毁当前运行环境](#%E9%94%80%E6%AF%81%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83)
