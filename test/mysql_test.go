@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/e421083458/gorm"
 	"github.com/wl1524520/golang_common/lib"
+	"gorm.io/gorm"
 )
 
 type Test1 struct {
@@ -111,10 +111,10 @@ func Test_GORM(t *testing.T) {
 		t.Fatal(err)
 	}
 	db := dbpool.Begin()
-	traceCtx := lib.NewTrace()
+	// traceCtx := lib.NewTrace()
 
 	//设置trace信息
-	db = db.SetCtx(traceCtx)
+	// db = db.SetCtx(traceCtx)
 	if err := db.Exec(createTableSQL).Error; err != nil {
 		db.Rollback()
 		t.Fatal(err)

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/e421083458/gorm"
 	"github.com/spf13/viper"
 	dlog "github.com/wl1524520/golang_common/log"
+	"gorm.io/gorm"
 )
 
 type BaseConf struct {
