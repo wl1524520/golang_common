@@ -34,7 +34,7 @@
  1. 多套配置环境设置，比如：dev、prod。
  2. mysql、redis 多套数据源配置。
  3. 支持默认和自定义日志实例，自动滚动日志。
- 4. 支持 mysql(基于gorm的二次开发支持ctx功能，不影响gorm原功能使用)、redis(redigo)、http.client 请求链路日志输出。
+ 4. 支持 mysql(gorm)、redis(redigo)、http.client 请求链路日志输出。
 ## 安装及使用
  1. 需要确保已经安装了 Go 1.8+，然后执行以下命令
 ```
@@ -44,7 +44,7 @@ go get -v github.com/e421083458/golang_common
 可以通过 InitModule("配置地址","模块数组") 方法按模块需加载配置。
 
 - base：包含日志和系统时间配置等
-- mysql：包含mysql操作方法和日志
+- database：包含mysql/sqlite操作方法和日志
 - redis：包含redis操作方法和日志
 
 
@@ -255,89 +255,6 @@ func TestLogInstance(t *testing.T) {
 	nlog.Info("test message")
 	nlog.Close()
 	time.Sleep(time.Second)
-}
-```
-
-### 测试mysql普通sql
-
-```
-var (
-	createTableSQL = "CREATE TABLE `test1` (`id` int(12) unsigned NOT NULL AUTO_INCREMENT" +
-		" COMMENT '自增id',`name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名'," +
-		"`created_at` datetime NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB " +
-		"DEFAULT CHARSET=utf8"
-	insertSQL    = "INSERT INTO `test1` (`id`, `name`, `created_at`) VALUES (NULL, '111', '2018-08-29 11:01:43');"
-	dropTableSQL = "DROP TABLE `test1`"
-	beginSQL     = "start transaction;"
-	commitSQL    = "commit;"
-	rollbackSQL  = "rollback;"
-)
-
-func Test_DBPool(t *testing.T) {
-	SetUp()
-
-	//获取链接池
-	dbpool, err := lib.GetDBPool("default")
-	if err != nil {
-		t.Fatal(err)
-	}
-	//开始事务
-	trace := lib.NewTrace()
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, beginSQL); err != nil {
-		t.Fatal(err)
-	}
-
-	//创建表
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, createTableSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//插入数据
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, insertSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//循环查询数据
-	current_id := 0
-	table_name := "test1"
-	fmt.Println("begin read table ", table_name, "")
-	fmt.Println("------------------------------------------------------------------------")
-	fmt.Printf("%6s | %6s\n", "id", "created_at")
-	for {
-		rows, err := lib.DBPoolLogQuery(trace, dbpool, "SELECT id,created_at FROM test1 WHERE id>? order by id asc", current_id)
-		defer rows.Close()
-		row_len := 0
-		if err != nil {
-			lib.DBPoolLogQuery(trace, dbpool, "rollback;")
-			t.Fatal(err)
-		}
-		for rows.Next() {
-			var create_time string
-			if err := rows.Scan(&current_id, &create_time); err != nil {
-				lib.DBPoolLogQuery(trace, dbpool, "rollback;")
-				t.Fatal(err)
-			}
-			fmt.Printf("%6d | %6s\n", current_id, create_time)
-			row_len++
-		}
-		if row_len == 0 {
-			break
-		}
-	}
-	fmt.Println("------------------------------------------------------------------------")
-	fmt.Println("finish read table ", table_name, "")
-
-	//删除表
-	if _, err := lib.DBPoolLogQuery(trace, dbpool, dropTableSQL); err != nil {
-		lib.DBPoolLogQuery(trace, dbpool, rollbackSQL)
-		t.Fatal(err)
-	}
-
-	//提交事务
-	lib.DBPoolLogQuery(trace, dbpool, commitSQL)
-	TearDown()
 }
 ```
 
