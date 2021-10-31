@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := lib.InitModule("./conf/dev/", []string{"base", "mysql", "redis"}); err != nil {
+	if err := lib.InitModule("./conf/dev/", []string{"base", "database", "redis"}); err != nil {
 		log.Fatal(err)
 	}
 	defer lib.Destroy()
