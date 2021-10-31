@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/wl1524520/golang_common/lib"
-	"gorm.io/gorm"
 )
 
 type Test1 struct {
@@ -19,20 +18,12 @@ func (f *Test1) Table() string {
 	return "test1"
 }
 
-func (f *Test1) DB() *gorm.DB {
-	return lib.GORMDefaultPool
-}
-
 var (
 	createTableSQL = "CREATE TABLE `test1` (`id` int(12) unsigned NOT NULL AUTO_INCREMENT" +
 		" COMMENT '自增id',`name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名'," +
 		"`created_at` datetime NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB " +
 		"DEFAULT CHARSET=utf8"
-	insertSQL    = "INSERT INTO `test1` (`id`, `name`, `created_at`) VALUES (NULL, '111', '2018-08-29 11:01:43');"
 	dropTableSQL = "DROP TABLE `test1`"
-	beginSQL     = "start transaction;"
-	commitSQL    = "commit;"
-	rollbackSQL  = "rollback;"
 )
 
 func Test_MySQL_GORM(t *testing.T) {
